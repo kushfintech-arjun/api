@@ -1,0 +1,31 @@
+version: "3"
+services:
+  api:
+    container_name: api
+    image: api
+    build:
+      context: .
+      target: development
+    command: pnpm run start:dev gmg-api
+    ports:
+      - '3000:3000'
+
+  user:
+    container_name: user
+    image: user
+    build:
+      context: .
+      target: development
+    command: pnpm run start:dev gmg-api
+    ports:
+      - '3001:3000'
+
+  auth:
+    container_name: auth
+    image: auth
+    build:
+      context: .
+      target: development
+    command: pnpm run start:dev gmg-api
+    ports:
+      - '3002:3000'
