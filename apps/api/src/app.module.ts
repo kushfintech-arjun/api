@@ -6,17 +6,17 @@ import { AppController } from './app.controller';
   imports: [
     ClientsModule.register([
       {
-        name: 'user-service',
+        name: 'auth-service',
         options: {
-          host: 'localhost',
-          port: 3002,
+          host: 'auth',
+          port: 3001,
         },
       },
       {
-        name: 'auth-service',
+        name: 'user-service',
         options: {
-          host: 'localhost',
-          port: 3001,
+          host: 'user',
+          port: 3002,
         },
       },
     ]),

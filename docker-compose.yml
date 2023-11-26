@@ -6,9 +6,29 @@ services:
     build:
       context: .
       target: development
-    command: pnpm run start:dev gmg-api
+      args:
+        - APP=api
+    command: pnpm run start:dev api
     ports:
       - '3000:3000'
+    depends_on:
+      - auth
+      - user
+    networks:
+      - gmg-network
+  auth:
+    container_name: auth
+    image: auth
+    build:
+      context: .
+      target: development
+      args:
+        - APP=auth
+    command: pnpm run start:dev auth
+    ports:
+      - '3001:3001/tcp'
+    networks:
+      - gmg-network
 
   user:
     container_name: user
@@ -16,16 +36,14 @@ services:
     build:
       context: .
       target: development
-    command: pnpm run start:dev gmg-api
+      args:
+        - APP=user
+    command: pnpm run start:dev user
     ports:
-      - '3001:3000'
+      - '3002:3002/tcp'
+    networks:
+      - gmg-network
 
-  auth:
-    container_name: auth
-    image: auth
-    build:
-      context: .
-      target: development
-    command: pnpm run start:dev gmg-api
-    ports:
-      - '3002:3000'
+networks:
+  gmg-network:
+    driver: bridge

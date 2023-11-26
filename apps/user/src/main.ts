@@ -1,16 +1,25 @@
 import { NestFactory } from '@nestjs/core';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import {
+  MicroserviceOptions,
+  TcpOptions,
+  Transport,
+} from '@nestjs/microservices';
 import { UserModule } from './user.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(UserModule);
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.TCP,
-    options: {
-      port: 3002,
-    },
-  });
+  // const app = await NestFactory.create(UserModule);
 
-  app.startAllMicroservices();
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    UserModule,
+    {
+      transport: Transport.TCP,
+      options: {
+        host: 'user',
+        port: 3002,
+      },
+    } as TcpOptions,
+  );
+
+  app.listen();
 }
 bootstrap();
